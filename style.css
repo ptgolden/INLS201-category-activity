@@ -31,6 +31,36 @@ ul {
 
 }
 
+#overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #f0f0f0;
+    display: none;
+}
+
+#overlay img {
+    max-height: 100%;
+}
+
+#overlay::before {
+    content: "Click anywhere to close";
+    background: red;
+    position: absolute;
+    font-size: 36px;
+    padding: 1em;
+    right: 0;
+    top: 0;
+}
+
+#overlay.show {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 input {
     margin-bottom: .66em;
     font-size: 120%;

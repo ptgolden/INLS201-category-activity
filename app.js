@@ -9,6 +9,7 @@ const images = [
 ]
 
 const uncategorized = document.querySelector('#uncategorized')
+    , overlay = document.querySelector('#overlay')
 
 images.forEach(name => {
   const el = document.createElement('li')
@@ -20,6 +21,19 @@ images.forEach(name => {
 
   el.appendChild(img)
   uncategorized.appendChild(el)
+
+  el.addEventListener('dblclick', e => {
+    overlay.classList.add('show')
+
+    const imgCopy = img.cloneNode()
+
+    overlay.appendChild(imgCopy)
+  })
+})
+
+overlay.addEventListener('click', () => {
+  overlay.classList.remove('show')
+  overlay.innerHTML = ''
 })
 
 Sortable.create(uncategorized, {
