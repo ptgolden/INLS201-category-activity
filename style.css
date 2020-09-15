@@ -29,6 +29,7 @@ ul {
     align-items: center;
     justify-content: center;
 
+    position: relative;
 }
 
 #overlay {
@@ -71,6 +72,20 @@ input {
 
 .item:hover, .sortable-chosen {
     background-color: #ccc;
+}
+
+.item::before {
+    content: attr(data-name);
+    color: white;
+    font-weight: bold;
+    position: absolute;
+    font-family: sans-serif;
+    top: 0;
+    left: 0;
+    width: 2ch;
+    background: black;
+    text-align: center;
+    font-size: 20px;
 }
 
 #main {

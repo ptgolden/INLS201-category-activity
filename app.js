@@ -18,6 +18,7 @@ images.forEach(name => {
   el.classList.add('item')
 
   img.src = `images/${name}.png`
+  el.dataset.name = name;
 
   el.appendChild(img)
   uncategorized.appendChild(el)
