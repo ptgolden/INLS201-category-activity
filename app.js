@@ -1,6 +1,6 @@
 "use strict";
 
-const { Sortable } = window
+const { Sortable, html2canvas } = window
 
 const images = [
   'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
@@ -10,6 +10,21 @@ const images = [
 
 const uncategorized = document.querySelector('#uncategorized')
     , overlay = document.querySelector('#overlay')
+    , save = document.querySelector('#save')
+    , main = document.querySelector('#main')
+
+save.addEventListener('click', () => {
+  html2canvas(main).then(canvas => {
+    const link = document.createElement('a')
+
+    document.body.appendChild(link)
+    link.download = 'categories.png';
+    link.href = canvas.toDataURL('image/png')
+    link.target = '_blank';
+    link.click()
+    document.body.removeChild(link)
+  })
+})
 
 images.forEach(name => {
   const el = document.createElement('li')
