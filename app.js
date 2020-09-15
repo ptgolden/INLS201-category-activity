@@ -23,7 +23,7 @@ images.forEach(name => {
   el.appendChild(img)
   uncategorized.appendChild(el)
 
-  el.addEventListener('dblclick', e => {
+  el.addEventListener('dblclick', () => {
     overlay.classList.add('show')
 
     const imgCopy = img.cloneNode()
