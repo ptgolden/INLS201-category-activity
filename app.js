@@ -2,11 +2,7 @@
 
 const { Sortable, html2canvas } = window
 
-const images = [
-  'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-  'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-  '1', '2', '3', '4',
-]
+const keys = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789'
 
 const uncategorized = document.querySelector('#uncategorized')
     , overlay = document.querySelector('#overlay')
@@ -26,47 +22,77 @@ save.addEventListener('click', () => {
   })
 })
 
-images.forEach(name => {
-  const el = document.createElement('li')
-      , img = document.createElement('img')
+fetch('./items.json')
+  .then(resp => resp.json())
+  .then(({ items, numCategories }) => {
+    if (items.length > keys.length) {
+      const msg = 'Too many items added. Maximum number of items is ' + keys.length
+      alert(msg)
+      throw new Error(msg)
+    }
 
-  el.classList.add('item')
+    for (let i = 0; i < numCategories; i++) {
+      const categoryEl = document.createElement('div')
+      categoryEl.classList.add('category')
 
-  img.src = `images/${name}.png`
-  el.dataset.name = name;
+      categoryEl.innerHTML = `
+      <h1>Category ${i + 1}</h1>
+      <input type="text" placeholder="description of category..." />
+      <ul id="col${i + 1}"></ul>
+      `
 
-  el.appendChild(img)
-  uncategorized.appendChild(el)
+      main.insertBefore(categoryEl, uncategorized)
+    }
 
-  el.addEventListener('dblclick', () => {
-    overlay.classList.add('show')
+    main.style.gridTemplateColumns = `repeat(${numCategories}, ${100 / numCategories}%)`
+    uncategorized.style.gridColumn = `span ${numCategories}`
 
-    const imgCopy = img.cloneNode()
 
-    overlay.appendChild(imgCopy)
+    items.forEach((filename, i) => {
+      const el = document.createElement('li')
+          , img = document.createElement('img')
+
+      el.classList.add('item')
+
+      img.src = filename
+      el.dataset.name = keys[i]
+
+      el.appendChild(img)
+      uncategorized.appendChild(el)
+
+      el.addEventListener('dblclick', () => {
+        overlay.classList.add('show')
+
+        const imgCopy = img.cloneNode()
+
+        overlay.appendChild(imgCopy)
+      })
+    })
+
+    initializeSortable()
   })
-})
 
 overlay.addEventListener('click', () => {
   overlay.classList.remove('show')
   overlay.innerHTML = ''
 })
 
-Sortable.create(uncategorized, {
-  group: {
-    name: 'items',
-    push: true,
-    pull: true,
-  },
-})
-
-
-Array.from(document.querySelectorAll('.category ul')).forEach(el => {
-  Sortable.create(el, {
+function initializeSortable() {
+  Sortable.create(uncategorized, {
     group: {
       name: 'items',
       push: true,
       pull: true,
     },
   })
-})
+
+  Array.from(document.querySelectorAll('.category ul')).forEach(el => {
+    Sortable.create(el, {
+      group: {
+        name: 'items',
+        push: true,
+        pull: true,
+      },
+    })
+  })
+}

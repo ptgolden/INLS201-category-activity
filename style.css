@@ -105,12 +105,7 @@ input {
 
 #main {
     display: grid;
-    grid-template-columns: repeat(5, 20%);
     grid-template-rows: minmax(400px auto) 1fr;
-}
-
-#uncategorized {
-    grid-column: span 5;
 }
 
 .item img {
