@@ -22,7 +22,7 @@ save.addEventListener('click', () => {
   })
 })
 
-fetch('./items.json')
+fetch('./config.json')
   .then(resp => resp.json())
   .then(({ items, numCategories }) => {
     if (items.length > keys.length) {
